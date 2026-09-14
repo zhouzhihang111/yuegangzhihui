@@ -1,0 +1,1 @@
+package com.yuegang.zhihui.system.api;import jakarta.validation.constraints.*;public record UpsertPermissionRequest(@NotBlank@Pattern(regexp="[A-Za-z][A-Za-z0-9:_-]{0,127}")String code,@NotBlank@Size(max=100)String name,@NotBlank@Pattern(regexp="[A-Z][A-Z0-9_]{0,31}")String resourceType,boolean enabled){}

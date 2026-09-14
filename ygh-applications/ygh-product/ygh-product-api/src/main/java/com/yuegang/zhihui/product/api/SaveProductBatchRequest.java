@@ -1,0 +1,1 @@
+package com.yuegang.zhihui.product.api;import jakarta.validation.constraints.*;import java.time.*;public record SaveProductBatchRequest(@NotBlank @Size(max=64)String batchNo,@Size(max=200)String origin,@Size(max=512)String proofUrl,LocalDate producedOn,LocalDate expiresOn,@Size(max=2000)String traceDescription){}

@@ -1,0 +1,1 @@
+package com.yuegang.zhihui.training.api;import java.time.OffsetDateTime;public record ChapterProgressView(String chapterId,int activeSeconds,String lastPosition,boolean completed,OffsetDateTime completedAt,long version){}

@@ -1,0 +1,1 @@
+package com.yuegang.zhihui.ai;import org.springframework.boot.*;import org.springframework.boot.autoconfigure.*;@SpringBootApplication public class AiApplication{public static void main(String[]a){SpringApplication.run(AiApplication.class,a);}}

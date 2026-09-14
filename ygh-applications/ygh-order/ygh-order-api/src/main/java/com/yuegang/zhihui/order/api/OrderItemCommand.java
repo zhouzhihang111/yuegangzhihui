@@ -1,0 +1,1 @@
+package com.yuegang.zhihui.order.api;import jakarta.validation.constraints.*;import java.math.BigDecimal;public record OrderItemCommand(@NotBlank String skuId,@NotBlank String skuCode,@NotBlank String productName,@NotNull @DecimalMin("0.00")BigDecimal unitPrice,@Positive long quantity){}

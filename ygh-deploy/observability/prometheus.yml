@@ -1,0 +1,28 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+rule_files: [/etc/prometheus/rules/*.yml]
+alerting:
+  alertmanagers:
+    - static_configs: [{targets: [alertmanager:9093]}]
+scrape_configs:
+  - job_name: ygh-java-services
+    metrics_path: /actuator/prometheus
+    static_configs:
+      - targets:
+          - gateway:8080
+          - auth:8081
+          - user:8082
+          - system:8083
+          - product:8084
+          - inventory:8085
+          - order:8086
+          - wallet:8087
+          - knowledge:8088
+          - search:8089
+          - ai:8090
+          - training:8091
+          - notification:8092
+          - admin:8093
+  - job_name: node
+    static_configs: [{targets: [node-exporter:9100]}]

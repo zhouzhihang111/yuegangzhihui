@@ -1,0 +1,33 @@
+groups:
+  - name: ygh-platform
+    rules:
+      - alert: ServiceUnavailable
+        expr: up{job="ygh-java-services"} == 0
+        for: 2m
+        labels: {severity: critical}
+        annotations: {summary: "YGH service unavailable", description: "{{ $labels.instance }} has been unavailable for two minutes."}
+      - alert: HighHttpErrorRate
+        expr: sum by(instance)(rate(http_server_requests_seconds_count{status=~"5.."}[5m])) / clamp_min(sum by(instance)(rate(http_server_requests_seconds_count[5m])), 0.001) > 0.05
+        for: 5m
+        labels: {severity: warning}
+        annotations: {summary: "HTTP 5xx ratio exceeds 5%"}
+      - alert: SlowHttpP95
+        expr: histogram_quantile(0.95, sum by(le,instance)(rate(http_server_requests_seconds_bucket[5m]))) > 1
+        for: 5m
+        labels: {severity: warning}
+        annotations: {summary: "HTTP P95 exceeds one second"}
+      - alert: HighJvmHeapUsage
+        expr: sum by(instance)(jvm_memory_used_bytes{area="heap"}) / clamp_min(sum by(instance)(jvm_memory_max_bytes{area="heap"}), 1) > 0.85
+        for: 10m
+        labels: {severity: warning}
+        annotations: {summary: "JVM heap usage exceeds 85%"}
+      - alert: DatabasePoolSaturated
+        expr: hikaricp_connections_active / clamp_min(hikaricp_connections_max, 1) > 0.9
+        for: 5m
+        labels: {severity: warning}
+        annotations: {summary: "Database connection pool exceeds 90%"}
+      - alert: HostDiskNearlyFull
+        expr: 1 - node_filesystem_avail_bytes{fstype!~"tmpfs|overlay"} / node_filesystem_size_bytes{fstype!~"tmpfs|overlay"} > 0.8
+        for: 10m
+        labels: {severity: critical}
+        annotations: {summary: "Host disk usage exceeds 80%"}

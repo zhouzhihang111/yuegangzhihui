@@ -1,0 +1,151 @@
+name: ygh-vm
+
+services:
+  mysql:
+    image: mysql:8.4.10
+    profiles: ["core"]
+    restart: unless-stopped
+    environment:
+      TZ: Asia/Shanghai
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?required}
+      MYSQL_DATABASE: nacos_config
+      MYSQL_USER: nacos
+      MYSQL_PASSWORD: ${NACOS_DB_PASSWORD:?required}
+    ports:
+      - "192.168.154.10:3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./mysql/conf.d/ygh-low-memory.cnf:/etc/mysql/conf.d/ygh-low-memory.cnf:ro,Z
+    networks: [ygh-core]
+    mem_limit: 640m
+    cpus: 0.60
+    healthcheck:
+      test: ["CMD-SHELL", "MYSQL_PWD=$${MYSQL_ROOT_PASSWORD} mysqladmin ping -h 127.0.0.1 -uroot --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 40s
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "3" }
+
+  redis:
+    image: redis:8.4.4
+    profiles: ["core"]
+    restart: unless-stopped
+    environment:
+      TZ: Asia/Shanghai
+      REDIS_PASSWORD: ${REDIS_PASSWORD:?required}
+    command:
+      - sh
+      - -c
+      - exec redis-server --appendonly yes --appendfsync everysec --maxmemory 96mb --maxmemory-policy noeviction --requirepass "$${REDIS_PASSWORD}"
+    ports:
+      - "192.168.154.10:6379:6379"
+    volumes:
+      - redis-data:/data
+    networks: [ygh-core]
+    mem_limit: 128m
+    cpus: 0.20
+    healthcheck:
+      test: ["CMD-SHELL", "REDISCLI_AUTH=$${REDIS_PASSWORD} redis-cli ping | grep -q PONG"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+    logging:
+      driver: json-file
+      options: { max-size: "5m", max-file: "3" }
+
+  nacos:
+    image: nacos/nacos-server:v3.1.1
+    profiles: ["core"]
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      TZ: Asia/Shanghai
+      MODE: standalone
+      PREFER_HOST_MODE: hostname
+      SPRING_DATASOURCE_PLATFORM: mysql
+      MYSQL_SERVICE_HOST: mysql
+      MYSQL_SERVICE_PORT: 3306
+      MYSQL_SERVICE_DB_NAME: nacos_config
+      MYSQL_SERVICE_USER: nacos
+      MYSQL_SERVICE_PASSWORD: ${NACOS_DB_PASSWORD:?required}
+      MYSQL_DATABASE_NUM: 1
+      MYSQL_SERVICE_DB_PARAM: characterEncoding=utf8&connectTimeout=3000&socketTimeout=5000&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
+      NACOS_AUTH_ENABLE: "true"
+      NACOS_AUTH_ADMIN_ENABLE: "true"
+      NACOS_AUTH_CONSOLE_ENABLE: "true"
+      NACOS_AUTH_SYSTEM_TYPE: nacos
+      NACOS_AUTH_TOKEN: ${NACOS_AUTH_TOKEN:?required}
+      NACOS_AUTH_IDENTITY_KEY: ${NACOS_AUTH_IDENTITY_KEY:?required}
+      NACOS_AUTH_IDENTITY_VALUE: ${NACOS_AUTH_IDENTITY_VALUE:?required}
+      JVM_XMS: 384m
+      JVM_XMX: 384m
+      JVM_XMN: 128m
+    ports:
+      - "192.168.154.10:8080:8080"
+      - "192.168.154.10:8848:8848"
+      - "192.168.154.10:9848:9848"
+    networks: [ygh-core]
+    # JVM 堆固定为 384 MiB；为元空间、直接内存和线程栈预留安全余量。
+    mem_limit: 768m
+    cpus: 0.70
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:8848/nacos/v3/admin/core/state/readiness >/dev/null"]
+      interval: 15s
+      timeout: 5s
+      retries: 30
+      start_period: 90s
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "3" }
+
+  pgvector:
+    image: pgvector/pgvector:0.8.5-pg17-bookworm
+    profiles: ["ai-data"]
+    restart: unless-stopped
+    environment:
+      TZ: Asia/Shanghai
+      POSTGRES_DB: ygh_vector
+      POSTGRES_USER: ygh_vector
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?required}
+    command:
+      - postgres
+      - -c
+      - shared_buffers=64MB
+      - -c
+      - max_connections=30
+      - -c
+      - work_mem=2MB
+    ports:
+      - "192.168.154.10:5432:5432"
+    volumes:
+      - pgvector-data:/var/lib/postgresql/data
+      - ./postgres/init:/docker-entrypoint-initdb.d:ro,Z
+    networks: [ygh-core]
+    mem_limit: 384m
+    cpus: 0.35
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ygh_vector -d ygh_vector"]
+      interval: 10s
+      timeout: 5s
+      retries: 15
+      start_period: 20s
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "3" }
+
+networks:
+  ygh-core:
+    name: ygh-core
+
+volumes:
+  mysql-data:
+    name: ygh-mysql-data
+  redis-data:
+    name: ygh-redis-data
+  pgvector-data:
+    name: ygh-pgvector-data

@@ -1,0 +1,1 @@
+package com.yuegang.zhihui.search;import org.springframework.boot.*;import org.springframework.boot.autoconfigure.*;@SpringBootApplication public class SearchApplication{public static void main(String[]a){SpringApplication.run(SearchApplication.class,a);}}

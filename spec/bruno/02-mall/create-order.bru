@@ -1,0 +1,6 @@
+meta { name: Create Simulated Order type: http seq: 3 }
+post { url: {{baseUrl}}/api/v1/orders body: json auth: bearer }
+auth:bearer { token: {{accessToken}} }
+headers { Idempotency-Key: bruno-order-001 }
+body:json { {"requestId":"bruno-order-001","items":[{"skuId":"{{skuId}}","skuCode":"DEMO-SKU","productName":"联调商品","unitPrice":10.00,"quantity":1}],"address":{"recipientName":"联调用户","recipientPhone":"13800000000","countryCode":"CN","provinceCode":"440000","provinceName":"广东省","cityName":"韶关市","districtName":"浈江区","addressDetail":"脱敏联调地址","postalCode":"512000"},"remark":"模拟订单，不发货"} }
+script:post-response { if (res.body?.data?.orderId) bru.setEnvVar("orderId", res.body.data.orderId); }

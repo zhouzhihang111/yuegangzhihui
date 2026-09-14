@@ -1,0 +1,3 @@
+meta { name: My Training Assignments type: http seq: 1 }
+get { url: {{baseUrl}}/api/v1/training/assignments/mine body: none auth: bearer }
+auth:bearer { token: {{accessToken}} }

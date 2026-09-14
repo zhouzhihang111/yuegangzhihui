@@ -1,0 +1,1 @@
+package com.yuegang.zhihui.ai.api;import jakarta.validation.constraints.*;public record SaveEvaluationCaseRequest(@NotBlank @Pattern(regexp="POLICY|CUSTOMS|TRACEABILITY|RECOMMENDATION")String category,@NotBlank @Size(max=4000)String question,@NotBlank @Size(max=4000)String expectedEvidence,@Size(max=4000)String forbiddenAnswer,boolean expectedRefusal,boolean enabled){}

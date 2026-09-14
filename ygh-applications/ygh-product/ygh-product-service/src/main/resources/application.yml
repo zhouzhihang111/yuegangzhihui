@@ -1,0 +1,33 @@
+server.port: ${YGH_PRODUCT_PORT:8084}
+spring:
+  application.name: ygh-product-service
+  datasource:
+    url: ${YGH_PRODUCT_DB_URL}
+    username: ${YGH_PRODUCT_DB_APP_USERNAME:ygh_product_app}
+    password: ${YGH_PRODUCT_DB_APP_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  data.redis:
+    host: ${YGH_REDIS_HOST}
+    port: ${YGH_REDIS_PORT:6379}
+    password: ${YGH_REDIS_PASSWORD}
+    database: ${YGH_PRODUCT_REDIS_DATABASE:2}
+    timeout: 2s
+  flyway:
+    url: ${YGH_PRODUCT_DB_URL}
+    user: ${YGH_PRODUCT_DB_MIGRATION_USERNAME:ygh_product_migration}
+    password: ${YGH_PRODUCT_DB_MIGRATION_PASSWORD}
+    locations: classpath:db/migration
+  cloud.nacos.discovery:
+    server-addr: ${YGH_NACOS_SERVER_ADDR}
+    username: ${YGH_NACOS_USERNAME}
+    password: ${YGH_NACOS_PASSWORD}
+    namespace: ${YGH_NACOS_NAMESPACE:ygh-dev}
+    group: ${YGH_NACOS_DISCOVERY_GROUP:YGH_GROUP}
+management.endpoints.web.exposure.include: health,info,metrics,prometheus
+management.endpoint.health.probes.enabled: true
+management.endpoint.health.show-details: when-authorized
+management.metrics.tags.application: ${spring.application.name}
+ygh.mq.enabled: ${YGH_MQ_ENABLED:false}
+ygh.mq.nameserver: ${YGH_ROCKETMQ_NAMESERVER:127.0.0.1:9876}
+ygh.mq.topic: ${YGH_ROCKETMQ_TOPIC:YGH_DOMAIN_EVENTS}
+ygh.product.search-base-url: ${YGH_SEARCH_BASE_URL:http://127.0.0.1:18089}

@@ -1,0 +1,1 @@
+package com.yuegang.zhihui.training.api;import java.math.BigDecimal;import java.util.List;public record TrainingAnalyticsView(long assigned,long completed,long overdue,BigDecimal completionRate,BigDecimal averageScore,List<WeakKnowledgeView>weakKnowledge){public record WeakKnowledgeView(String knowledgeCode,long wrongCount){}}

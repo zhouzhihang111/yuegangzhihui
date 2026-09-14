@@ -1,0 +1,1 @@
+ALTER TABLE order_outbox ADD COLUMN claimed_at DATETIME(6) NULL,ADD COLUMN last_error VARCHAR(1000) NULL;

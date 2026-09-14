@@ -1,0 +1,121 @@
+server:
+  port: ${YGH_GATEWAY_PORT:8080}
+  shutdown: graceful
+
+spring:
+  application:
+    name: ygh-gateway
+  main:
+    web-application-type: reactive
+  lifecycle:
+    timeout-per-shutdown-phase: 20s
+  data:
+    redis:
+      host: ${YGH_REDIS_HOST}
+      port: ${YGH_REDIS_PORT:6379}
+      password: ${YGH_REDIS_PASSWORD}
+      timeout: 2s
+  cloud:
+    nacos:
+      server-addr: ${YGH_NACOS_SERVER_ADDR}
+      username: ${YGH_NACOS_USERNAME}
+      password: ${YGH_NACOS_PASSWORD}
+      discovery:
+        enabled: ${YGH_NACOS_DISCOVERY_ENABLED:true}
+        namespace: ${YGH_NACOS_NAMESPACE:ygh-dev}
+        group: ${YGH_NACOS_DISCOVERY_GROUP:YGH_GROUP}
+        ip: ${YGH_SERVICE_IP:}
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: auth-service
+              uri: ${YGH_AUTH_SERVICE_URI:lb://ygh-auth-service}
+              predicates:
+                - Path=/api/v1/auth/**
+            - id: user-service
+              uri: ${YGH_USER_SERVICE_URI:lb://ygh-user-service}
+              predicates:
+                - Path=/api/v1/users/**,/api/v1/organization/**
+            - id: system-service
+              uri: ${YGH_SYSTEM_SERVICE_URI:lb://ygh-system-service}
+              predicates:
+                - Path=/api/v1/system/**,/api/v1/roles/**,/api/v1/permissions/**
+            - id: product-service
+              uri: ${YGH_PRODUCT_SERVICE_URI:lb://ygh-product-service}
+              predicates:
+                - Path=/api/v1/products/**,/api/v1/product-categories,/api/v1/product-brands,/api/v1/admin/products/**,/api/v1/admin/product-categories,/api/v1/admin/product-brands
+            - id: inventory-service
+              uri: ${YGH_INVENTORY_SERVICE_URI:lb://ygh-inventory-service}
+              predicates:
+                - Path=/api/v1/admin/inventory/**
+            - id: order-service
+              uri: ${YGH_ORDER_SERVICE_URI:lb://ygh-order-service}
+              predicates:
+                - Path=/api/v1/cart/**,/api/v1/orders/**,/api/v1/admin/orders/**
+            - id: wallet-service
+              uri: ${YGH_WALLET_SERVICE_URI:lb://ygh-wallet-service}
+              predicates:
+                - Path=/api/v1/wallet/**,/api/v1/admin/wallet/**
+            - id: knowledge-service
+              uri: ${YGH_KNOWLEDGE_SERVICE_URI:lb://ygh-knowledge-service}
+              predicates:
+                - Path=/api/v1/knowledge/**,/api/v1/admin/knowledge/**
+            - id: ai-service
+              uri: ${YGH_AI_SERVICE_URI:lb://ygh-ai-service}
+              predicates:
+                - Path=/api/v1/ai/**,/api/v1/admin/ai/**
+            - id: training-service
+              uri: ${YGH_TRAINING_SERVICE_URI:lb://ygh-training-service}
+              predicates:
+                - Path=/api/v1/training/**
+            - id: notification-service
+              uri: ${YGH_NOTIFICATION_SERVICE_URI:lb://ygh-notification-service}
+              predicates:
+                - Path=/api/v1/notifications/**,/api/v1/admin/notifications/**
+            - id: admin-service
+              uri: ${YGH_ADMIN_SERVICE_URI:lb://ygh-admin-service}
+              predicates:
+                - Path=/api/v1/admin/dashboard,/api/v1/admin/audit-logs
+
+ygh:
+  internal-request:
+    enabled: ${YGH_INTERNAL_REQUEST_SIGNATURE_ENABLED:true}
+    hmac-base64: ${YGH_INTERNAL_REQUEST_HMAC_BASE64}
+  gateway:
+    cors:
+      allowed-origins: ${YGH_GATEWAY_CORS_ALLOWED_ORIGINS}
+    request:
+      max-size: ${YGH_GATEWAY_REQUEST_MAX_SIZE:2MB}
+      upload-max-size: ${YGH_GATEWAY_UPLOAD_MAX_SIZE:50MB}
+      upload-paths: ${YGH_GATEWAY_UPLOAD_PATHS:/api/v1/knowledge/documents,/api/v1/training/documents,/api/v1/training/admin/chapters/*/documents,/api/v1/products/images}
+    sentinel:
+      auth-qps: ${YGH_GATEWAY_AUTH_QPS:20}
+      auth-burst: ${YGH_GATEWAY_AUTH_BURST:5}
+      service-qps: ${YGH_GATEWAY_SERVICE_QPS:100}
+      service-burst: ${YGH_GATEWAY_SERVICE_BURST:10}
+  security:
+    session-validation:
+      enabled: ${YGH_GATEWAY_SESSION_VALIDATION_ENABLED:true}
+    jwt:
+      issuer: ${YGH_JWT_ISSUER}
+      jwk-set-uri: ${YGH_JWT_JWK_SET_URI}
+      audience: ${YGH_JWT_AUDIENCE:ygh-api}
+  redis:
+    environment: ${YGH_REDIS_ENVIRONMENT}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true
+        add-additional-paths: true
+      show-details: never
+management.endpoints.web.exposure.include: health,info,metrics,prometheus
+management.endpoint.health.probes.enabled: true
+management.endpoint.health.show-details: when-authorized
+management.metrics.tags.application: ${spring.application.name}

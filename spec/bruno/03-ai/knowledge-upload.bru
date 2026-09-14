@@ -1,0 +1,5 @@
+meta { name: Upload Knowledge Document type: http seq: 1 }
+post { url: {{baseUrl}}/api/v1/knowledge/documents body: multipartForm auth: bearer }
+auth:bearer { token: {{accessToken}} }
+body:multipart-form { title: 联调政策文档 category: POLICY file: @file({{knowledgeFile}}) }
+script:post-response { if (res.body?.data?.id) bru.setEnvVar("knowledgeDocumentId", res.body.data.id); }

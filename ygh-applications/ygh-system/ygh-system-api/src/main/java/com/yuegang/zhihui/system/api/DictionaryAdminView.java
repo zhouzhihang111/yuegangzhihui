@@ -1,0 +1,1 @@
+package com.yuegang.zhihui.system.api;import java.util.*;public record DictionaryAdminView(String code,String name,boolean enabled,long version,List<Item>items){public record Item(String key,String value,int sortOrder,boolean enabled,long version){}}

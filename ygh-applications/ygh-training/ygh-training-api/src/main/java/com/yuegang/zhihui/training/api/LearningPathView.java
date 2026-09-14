@@ -1,0 +1,1 @@
+package com.yuegang.zhihui.training.api;import java.util.List;public record LearningPathView(String id,String positionCode,String name,boolean enabled,long version,List<PathCourseView>courses){public record PathCourseView(String courseId,int sequenceNo,String prerequisiteCourseId){}}

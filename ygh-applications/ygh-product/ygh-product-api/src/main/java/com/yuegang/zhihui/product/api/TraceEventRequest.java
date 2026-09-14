@@ -1,0 +1,1 @@
+package com.yuegang.zhihui.product.api;import jakarta.validation.constraints.*;import java.time.OffsetDateTime;import java.util.Map;public record TraceEventRequest(@NotBlank String type,@Size(max=200)String location,@NotNull OffsetDateTime occurredAt,Map<String,Object>details){}

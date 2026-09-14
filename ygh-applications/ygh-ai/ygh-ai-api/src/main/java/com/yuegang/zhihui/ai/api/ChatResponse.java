@@ -1,0 +1,1 @@
+package com.yuegang.zhihui.ai.api;import java.util.List;public record ChatResponse(String conversationId,String messageId,String answer,List<CitationView>citations,boolean refused,String refusalReason){}

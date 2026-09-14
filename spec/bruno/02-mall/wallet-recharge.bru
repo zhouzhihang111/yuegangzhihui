@@ -1,0 +1,5 @@
+meta { name: Simulated Recharge type: http seq: 2 }
+post { url: {{baseUrl}}/api/v1/wallet/recharges body: json auth: bearer }
+auth:bearer { token: {{accessToken}} }
+headers { Idempotency-Key: bruno-recharge-001 }
+body:json { {"requestId":"bruno-recharge-001","referenceId":"demo-topup","amount":1000.00,"currency":"CNY"} }

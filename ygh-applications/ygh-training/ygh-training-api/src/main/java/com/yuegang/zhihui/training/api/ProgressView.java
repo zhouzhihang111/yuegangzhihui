@@ -1,0 +1,1 @@
+package com.yuegang.zhihui.training.api;import java.math.BigDecimal;public record ProgressView(String assignmentId,String courseId,String userId,BigDecimal progressPercent,String status,String currentChapterId,Integer bestScore,long version){}

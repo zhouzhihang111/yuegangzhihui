@@ -1,0 +1,1 @@
+package com.yuegang.zhihui.system.api;import java.util.*;public record RoleView(String id,String code,String name,boolean enabled,long version,Set<String>permissions){public RoleView(String id,String code,String name,boolean enabled,long version){this(id,code,name,enabled,version,Set.of());}public RoleView{permissions=permissions==null?Set.of():Set.copyOf(permissions);}}

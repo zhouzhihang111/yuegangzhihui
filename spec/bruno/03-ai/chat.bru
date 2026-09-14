@@ -1,0 +1,4 @@
+meta { name: AI Chat type: http seq: 1 }
+post { url: {{baseUrl}}/api/v1/ai/chat body: json auth: bearer }
+auth:bearer { token: {{accessToken}} }
+body:json { {"message":"供港生鲜的商品溯源信息如何查询？","category":"TRACEABILITY","includeOwnOrders":false} }

@@ -1,0 +1,5 @@
+meta { name: Simulated Wallet Payment type: http seq: 4 }
+post { url: {{baseUrl}}/api/v1/wallet/payments body: json auth: bearer }
+auth:bearer { token: {{accessToken}} }
+headers { Idempotency-Key: bruno-payment-001 }
+body:json { {"requestId":"bruno-payment-001","referenceId":"{{orderId}}","amount":10.00,"currency":"CNY"} }

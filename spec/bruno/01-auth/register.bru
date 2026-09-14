@@ -1,0 +1,4 @@
+meta { name: Register type: http seq: 2 }
+post { url: {{baseUrl}}/api/v1/auth/register body: json auth: none }
+body:json { {"principal":"demo@example.com","password":"replace-at-runtime","confirmPassword":"replace-at-runtime","captchaChallengeId":"{{captchaChallengeId}}","captchaAnswer":"{{captchaAnswer}}","agreementAccepted":true} }
+script:post-response { if (res.body?.data?.tokens?.accessToken) { bru.setEnvVar("accessToken", res.body.data.tokens.accessToken); bru.setEnvVar("refreshToken", res.body.data.tokens.refreshToken); } }

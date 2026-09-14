@@ -1,0 +1,4 @@
+com.yuegang.zhihui.common.web.RequestLoggingAutoConfiguration
+com.yuegang.zhihui.common.web.YghOpenApiAutoConfiguration
+com.yuegang.zhihui.common.web.YghFeignAutoConfiguration
+com.yuegang.zhihui.common.web.YghJacksonConfiguration

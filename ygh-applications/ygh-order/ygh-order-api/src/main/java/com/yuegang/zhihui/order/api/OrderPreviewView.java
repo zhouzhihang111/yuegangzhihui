@@ -1,0 +1,1 @@
+package com.yuegang.zhihui.order.api;import java.math.BigDecimal;import java.util.List;public record OrderPreviewView(List<OrderItemCommand>items,BigDecimal totalAmount,String currency,AddressSnapshot address,List<String>warnings){}

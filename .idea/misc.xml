@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/ygh-denpendices/pom.xml" />
+        <option value="$PROJECT_DIR$/ygh-commonnn/pom.xml" />
+        <option value="$PROJECT_DIR$/ygh-commonnn/ygh-commonnn-core/pom.xml" />
+        <option value="$PROJECT_DIR$/ygh-commonnn/ygh-commonnn-security/pom.xml" />
+        <option value="$PROJECT_DIR$/ygh-commonnn/ygh-commonnn-redis/pom.xml" />
+        <option value="$PROJECT_DIR$/ygh-commonnn/ygh-commonnn-mybatis/pom.xml" />
+        <option value="$PROJECT_DIR$/ygh-commonnn/ygh-commonnn-mq/pom.xml" />
+        <option value="$PROJECT_DIR$/ygh-commonnn/ygh-commonnn-webb/pom.xml" />
+        <option value="$PROJECT_DIR$/ygh-commonnn/ygh-commonnn-test/pom.xml" />
+        <option value="$PROJECT_DIR$/ygh-application/pom.xml" />
+        <option value="$PROJECT_DIR$/ygh-application/ygh-user/pom.xml" />
+        <option value="$PROJECT_DIR$/ygh-application/ygh-user/ygh-user-api/pom.xml" />
+        <option value="$PROJECT_DIR$/ygh-application/ygh-user/ygh-user-service/pom.xml" />
+        <option value="$PROJECT_DIR$/ygh-application/ygh-system/pom.xml" />
+        <option value="$PROJECT_DIR$/ygh-application/ygh-system/ygh-system-api/pom.xml" />
+        <option value="$PROJECT_DIR$/ygh-application/ygh-system/ygh-system-service/pom.xml" />
+        <option value="$PROJECT_DIR$/ygh-application/ygh-product/pom.xml" />
+        <option value="$PROJECT_DIR$/ygh-application/ygh-product/ygh-product-api/pom.xml" />
+        <option value="$PROJECT_DIR$/ygh-application/ygh-product/ygh-product-service/pom.xml" />
+        <option value="$PROJECT_DIR$/ygh-application/ygh-inventory/pom.xml" />
+        <option value="$PROJECT_DIR$/ygh-application/ygh-inventory/ygh-inventory-api/pom.xml" />
+        <option value="$PROJECT_DIR$/ygh-application/ygh-inventory/ygh-inventory-service/pom.xml" />
+        <option value="$PROJECT_DIR$/ygh-application/ygh-order/pom.xml" />
+        <option value="$PROJECT_DIR$/ygh-application/ygh-order/ygh-order-api/pom.xml" />
+        <option value="$PROJECT_DIR$/ygh-application/ygh-order/ygh-order-service/pom.xml" />
+        <option value="$PROJECT_DIR$/ygh-application/ygh-wallet/pom.xml" />
+        <option value="$PROJECT_DIR$/ygh-application/ygh-wallet/ygh-wallet-api/pom.xml" />
+        <option value="$PROJECT_DIR$/ygh-application/ygh-wallet/ygh-wallet-service/pom.xml" />
+        <option value="$PROJECT_DIR$/ygh-application/ygh-knowledge/pom.xml" />
+        <option value="$PROJECT_DIR$/ygh-application/ygh-knowledge/ygh-knowledge-api/pom.xml" />
+        <option value="$PROJECT_DIR$/ygh-application/ygh-knowledge/ygh-knowledge-service/pom.xml" />
+        <option value="$PROJECT_DIR$/ygh-application/ygh-search/pom.xml" />
+        <option value="$PROJECT_DIR$/ygh-application/ygh-search/ygh-search-api/pom.xml" />
+        <option value="$PROJECT_DIR$/ygh-application/ygh-search/ygh-search-service/pom.xml" />
+        <option value="$PROJECT_DIR$/ygh-application/ygh-ai/pom.xml" />
+        <option value="$PROJECT_DIR$/ygh-application/ygh-ai/ygh-ai-api/pom.xml" />
+        <option value="$PROJECT_DIR$/ygh-application/ygh-ai/ygh-ai-service/pom.xml" />
+        <option value="$PROJECT_DIR$/ygh-application/ygh-training/pom.xml" />
+        <option value="$PROJECT_DIR$/ygh-application/ygh-training/ygh-training-api/pom.xml" />
+        <option value="$PROJECT_DIR$/ygh-application/ygh-training/ygh-training-service/pom.xml" />
+        <option value="$PROJECT_DIR$/ygh-application/ygh-notification/pom.xml" />
+        <option value="$PROJECT_DIR$/ygh-application/ygh-notification/ygh-notification-api/pom.xml" />
+        <option value="$PROJECT_DIR$/ygh-application/ygh-notification/ygh-notification-service/pom.xml" />
+        <option value="$PROJECT_DIR$/ygh-application/ygh-admin/pom.xml" />
+        <option value="$PROJECT_DIR$/ygh-application/ygh-admin/ygh-admin-api/pom.xml" />
+        <option value="$PROJECT_DIR$/ygh-application/ygh-admin/ygh-admin-service/pom.xml" />
+        <option value="$PROJECT_DIR$/ygh-platform/pom.xml" />
+        <option value="$PROJECT_DIR$/ygh-platform/ygh-auth-service/pom.xml" />
+        <option value="$PROJECT_DIR$/ygh-platform/ygh-gateway/pom.xml" />
+        <option value="$PROJECT_DIR$/ygh-deploy/pom.xml" />
+        <option value="$PROJECT_DIR$/ygh-tests/pom.xml" />
+      </list>
+    </option>
+    <option name="enabledProfiles">
+      <list>
+        <option value="aliyun-repos" />
+        <option value="release-sbom" />
+        <option value="jdk-25" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_25" default="true" project-jdk-name="25" project-jdk-type="JavaSDK" />
+</project>

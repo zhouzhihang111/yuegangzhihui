@@ -1,0 +1,1 @@
+package com.yuegang.zhihui.order.api;import jakarta.validation.Valid;import jakarta.validation.constraints.*;import java.util.List;public record CreateOrderRequest(@NotBlank String requestId,@NotNull @Size(min=1,max=100)List<@Valid OrderItemCommand>items,@NotNull @Valid AddressSnapshot address,String remark){}

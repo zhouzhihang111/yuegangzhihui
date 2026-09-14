@@ -1,0 +1,23 @@
+﻿{
+  "settings": {
+    "number_of_shards": 1,
+    "number_of_replicas": 0
+  },
+  "mappings": {
+    "properties": {
+      "documentId": { "type": "keyword" },
+      "chunkId": { "type": "keyword" },
+      "title": { "type": "text" },
+      "content": { "type": "text" },
+      "category": { "type": "keyword" },
+      "visibility": { "type": "keyword" },
+      "documentVersion": { "type": "long" },
+      "sourceUpdatedAt": { "type": "date" }
+    }
+  },
+  "aliases": {
+    "knowledge-active": {
+      "is_write_index": true
+    }
+  }
+}

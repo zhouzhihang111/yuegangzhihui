@@ -1,0 +1,96 @@
+server:
+  port: ${YGH_AUTH_PORT:8081}
+  shutdown: graceful
+
+spring:
+  application:
+    name: ygh-auth-service
+  lifecycle:
+    timeout-per-shutdown-phase: 20s
+  datasource:
+    url: ${YGH_AUTH_DB_URL}
+    username: ${YGH_AUTH_DB_APP_USERNAME:ygh_auth_app}
+    password: ${YGH_AUTH_DB_APP_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: ${YGH_AUTH_DB_POOL_MAX_SIZE:5}
+      minimum-idle: ${YGH_AUTH_DB_POOL_MIN_IDLE:1}
+      connection-timeout: 3000
+      validation-timeout: 2000
+  data:
+    redis:
+      host: ${YGH_REDIS_HOST}
+      port: ${YGH_REDIS_PORT:6379}
+      password: ${YGH_REDIS_PASSWORD}
+      timeout: 2s
+  flyway:
+    url: ${YGH_AUTH_DB_URL}
+    user: ${YGH_AUTH_DB_MIGRATION_USERNAME:ygh_auth_migration}
+    password: ${YGH_AUTH_DB_MIGRATION_PASSWORD}
+    locations: classpath:db/migration
+    clean-disabled: true
+    baseline-on-migrate: false
+    out-of-order: false
+    validate-on-migrate: true
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${YGH_NACOS_SERVER_ADDR}
+        username: ${YGH_NACOS_USERNAME}
+        password: ${YGH_NACOS_PASSWORD}
+        namespace: ${YGH_NACOS_NAMESPACE:ygh-dev}
+        group: ${YGH_NACOS_DISCOVERY_GROUP:YGH_GROUP}
+        ip: ${YGH_AUTH_ADVERTISE_IP:}
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+  global-config:
+    banner: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      show-details: never
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
+
+ygh:
+  notification:
+    internal-base-url: ${YGH_NOTIFICATION_INTERNAL_BASE_URL:http://notification:8092}
+  system:
+    internal-base-url: ${YGH_SYSTEM_INTERNAL_BASE_URL}
+  internal-request:
+    hmac-base64: ${YGH_INTERNAL_REQUEST_HMAC_BASE64}
+  auth:
+    id-worker: ${YGH_AUTH_ID_WORKER}
+    audit-pepper-base64: ${YGH_AUTH_AUDIT_PEPPER_BASE64}
+    rate-limit:
+      principal-limit: ${YGH_AUTH_PRINCIPAL_LOGIN_LIMIT:10}
+      principal-window: ${YGH_AUTH_PRINCIPAL_LOGIN_WINDOW:15m}
+      ip-limit: ${YGH_AUTH_IP_LOGIN_LIMIT:30}
+      ip-window: ${YGH_AUTH_IP_LOGIN_WINDOW:15m}
+  redis:
+    environment: ${YGH_REDIS_ENVIRONMENT}
+  security:
+    jwt:
+      enabled: ${YGH_JWT_ENABLED:false}
+      key-directory: ${YGH_JWT_KEY_DIRECTORY:}
+      active-kid: ${YGH_JWT_ACTIVE_KID:}
+      issuer: ${YGH_JWT_ISSUER:}
+      audience: ${YGH_JWT_AUDIENCE:ygh-api}
+      access-token-minutes: ${YGH_JWT_ACCESS_TOKEN_MINUTES:15}
+      refresh-token-days: ${YGH_JWT_REFRESH_TOKEN_DAYS:14}
+management.endpoints.web.exposure.include: health,info,metrics,prometheus
+management.endpoint.health.probes.enabled: true
+management.endpoint.health.show-details: when-authorized
+management.metrics.tags.application: ${spring.application.name}

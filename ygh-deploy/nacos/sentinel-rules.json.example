@@ -1,0 +1,6 @@
+[
+  {"resource":"POST:/api/v1/auth/login","grade":1,"count":5,"intervalSec":1,"controlBehavior":0},
+  {"resource":"POST:/api/v1/ai/chat/stream","grade":1,"count":2,"intervalSec":1,"controlBehavior":0},
+  {"resource":"POST:/api/v1/orders","grade":1,"count":20,"intervalSec":1,"controlBehavior":0},
+  {"resource":"GET:/api/v1/products","grade":1,"count":200,"intervalSec":1,"controlBehavior":0}
+]

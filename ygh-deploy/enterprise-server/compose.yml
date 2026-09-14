@@ -1,0 +1,304 @@
+name: ygh-enterprise
+
+x-java-service: &java-service
+  restart: unless-stopped
+  env_file:
+    - path: .env
+      required: false
+  networks: [ygh-backend]
+  read_only: true
+  tmpfs: [/tmp]
+  security_opt: [no-new-privileges:true]
+  mem_limit: 768m
+  cpus: 0.75
+  logging: &service-logging
+    driver: json-file
+    options: {max-size: 20m, max-file: "5"}
+
+x-health: &health
+  interval: 20s
+  timeout: 5s
+  retries: 10
+  start_period: 60s
+
+services:
+  mall-web:
+    image: ${YGH_REGISTRY:-ghcr.io/wangzaiwang-hub}/ygh-web-mall:${YGH_VERSION:?required}
+    restart: unless-stopped
+    depends_on: {gateway: {condition: service_healthy}}
+    ports: ["80:8080"]
+    networks: [ygh-backend]
+    read_only: true
+    tmpfs: [/tmp, /var/cache/nginx, /var/run]
+    security_opt: [no-new-privileges:true]
+    mem_limit: 128m
+    cpus: 0.25
+    logging: *service-logging
+
+  admin-web:
+    image: ${YGH_REGISTRY:-ghcr.io/wangzaiwang-hub}/ygh-web-admin:${YGH_VERSION:?required}
+    restart: unless-stopped
+    depends_on: {gateway: {condition: service_healthy}}
+    ports: ["8088:8080"]
+    networks: [ygh-backend]
+    read_only: true
+    tmpfs: [/tmp, /var/cache/nginx, /var/run]
+    security_opt: [no-new-privileges:true]
+    mem_limit: 128m
+    cpus: 0.25
+    logging: *service-logging
+
+  gateway:
+    <<: *java-service
+    image: ${YGH_REGISTRY:-ghcr.io/wangzaiwang-hub}/ygh-gateway:${YGH_VERSION:?required}
+    ports: ["8080:8080"]
+    healthcheck: {<<: *health, test: [CMD, wget, -qO-, http://127.0.0.1:8080/actuator/health/readiness]}
+  auth:
+    <<: *java-service
+    image: ${YGH_REGISTRY:-ghcr.io/wangzaiwang-hub}/ygh-auth-service:${YGH_VERSION:?required}
+    healthcheck: {<<: *health, test: [CMD, wget, -qO-, http://127.0.0.1:8081/actuator/health/readiness]}
+  user:
+    <<: *java-service
+    image: ${YGH_REGISTRY:-ghcr.io/wangzaiwang-hub}/ygh-user-service:${YGH_VERSION:?required}
+    healthcheck: {<<: *health, test: [CMD, wget, -qO-, http://127.0.0.1:8082/actuator/health/readiness]}
+  system:
+    <<: *java-service
+    image: ${YGH_REGISTRY:-ghcr.io/wangzaiwang-hub}/ygh-system-service:${YGH_VERSION:?required}
+    healthcheck: {<<: *health, test: [CMD, wget, -qO-, http://127.0.0.1:8083/actuator/health/readiness]}
+  product:
+    <<: *java-service
+    image: ${YGH_REGISTRY:-ghcr.io/wangzaiwang-hub}/ygh-product-service:${YGH_VERSION:?required}
+    environment:
+      YGH_SEARCH_BASE_URL: http://search:8089
+    healthcheck: {<<: *health, test: [CMD, wget, -qO-, http://127.0.0.1:8084/actuator/health/readiness]}
+  inventory:
+    <<: *java-service
+    image: ${YGH_REGISTRY:-ghcr.io/wangzaiwang-hub}/ygh-inventory-service:${YGH_VERSION:?required}
+    healthcheck: {<<: *health, test: [CMD, wget, -qO-, http://127.0.0.1:8085/actuator/health/readiness]}
+  order:
+    <<: *java-service
+    image: ${YGH_REGISTRY:-ghcr.io/wangzaiwang-hub}/ygh-order-service:${YGH_VERSION:?required}
+    healthcheck: {<<: *health, test: [CMD, wget, -qO-, http://127.0.0.1:8086/actuator/health/readiness]}
+  wallet:
+    <<: *java-service
+    image: ${YGH_REGISTRY:-ghcr.io/wangzaiwang-hub}/ygh-wallet-service:${YGH_VERSION:?required}
+    healthcheck: {<<: *health, test: [CMD, wget, -qO-, http://127.0.0.1:8087/actuator/health/readiness]}
+  knowledge:
+    <<: *java-service
+    image: ${YGH_REGISTRY:-ghcr.io/wangzaiwang-hub}/ygh-knowledge-service:${YGH_VERSION:?required}
+    volumes: [knowledge-files:/data/knowledge]
+    read_only: false
+    healthcheck: {<<: *health, test: [CMD, wget, -qO-, http://127.0.0.1:8088/actuator/health/readiness]}
+  search:
+    <<: *java-service
+    image: ${YGH_REGISTRY:-ghcr.io/wangzaiwang-hub}/ygh-search-service:${YGH_VERSION:?required}
+    healthcheck: {<<: *health, test: [CMD, wget, -qO-, http://127.0.0.1:8089/actuator/health/readiness]}
+  ai:
+    <<: *java-service
+    image: ${YGH_REGISTRY:-ghcr.io/wangzaiwang-hub}/ygh-ai-service:${YGH_VERSION:?required}
+    mem_limit: 1024m
+    healthcheck: {<<: *health, test: [CMD, wget, -qO-, http://127.0.0.1:8090/actuator/health/readiness]}
+  training:
+    <<: *java-service
+    image: ${YGH_REGISTRY:-ghcr.io/wangzaiwang-hub}/ygh-training-service:${YGH_VERSION:?required}
+    healthcheck: {<<: *health, test: [CMD, wget, -qO-, http://127.0.0.1:8091/actuator/health/readiness]}
+  notification:
+    <<: *java-service
+    image: ${YGH_REGISTRY:-ghcr.io/wangzaiwang-hub}/ygh-notification-service:${YGH_VERSION:?required}
+    healthcheck: {<<: *health, test: [CMD, wget, -qO-, http://127.0.0.1:8092/actuator/health/readiness]}
+  admin:
+    <<: *java-service
+    image: ${YGH_REGISTRY:-ghcr.io/wangzaiwang-hub}/ygh-admin-service:${YGH_VERSION:?required}
+    environment:
+      YGH_LOKI_BASE_URL: http://loki:3100
+    healthcheck: {<<: *health, test: [CMD, wget, -qO-, http://127.0.0.1:8093/actuator/health/readiness]}
+
+  mysql:
+    image: mysql:8.4.10
+    restart: unless-stopped
+    env_file:
+      - path: .env
+        required: false
+    environment: {MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD:?required}"}
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks: [ygh-backend]
+    mem_limit: 2g
+    logging: *service-logging
+    healthcheck: {<<: *health, test: [CMD-SHELL, "MYSQL_PWD=$$MYSQL_ROOT_PASSWORD mysqladmin ping -uroot --silent"]}
+  redis:
+    image: redis:8.4.4
+    restart: unless-stopped
+    env_file:
+      - path: .env
+        required: false
+    command: [sh, -c, 'exec redis-server --appendonly yes --requirepass "$$REDIS_PASSWORD"']
+    volumes: [redis-data:/data]
+    networks: [ygh-backend]
+    mem_limit: 512m
+    logging: *service-logging
+  pgvector:
+    image: pgvector/pgvector:0.8.5-pg17-bookworm
+    restart: unless-stopped
+    env_file:
+      - path: .env
+        required: false
+    environment: {POSTGRES_DB: ygh_vector, POSTGRES_USER: ygh_vector, POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:?required}"}
+    volumes: [pgvector-data:/var/lib/postgresql/data]
+    networks: [ygh-backend]
+    mem_limit: 1g
+    logging: *service-logging
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.19.17
+    restart: unless-stopped
+    environment: {discovery.type: single-node, xpack.security.enabled: "true", ELASTIC_PASSWORD: "${ELASTIC_PASSWORD:?required}", ES_JAVA_OPTS: -Xms1g -Xmx1g}
+    volumes: [elasticsearch-data:/usr/share/elasticsearch/data]
+    networks: [ygh-backend]
+    mem_limit: 2g
+    logging: *service-logging
+
+  nacos:
+    image: nacos/nacos-server:v3.1.1
+    restart: unless-stopped
+    depends_on:
+      mysql: {condition: service_healthy}
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      MODE: standalone
+      SPRING_DATASOURCE_PLATFORM: mysql
+      MYSQL_SERVICE_HOST: mysql
+      MYSQL_SERVICE_PORT: 3306
+      MYSQL_SERVICE_DB_NAME: nacos_config
+      MYSQL_SERVICE_USER: nacos
+      MYSQL_SERVICE_PASSWORD: "${NACOS_DB_PASSWORD:?required}"
+      NACOS_AUTH_ENABLE: "true"
+      NACOS_AUTH_TOKEN: "${NACOS_AUTH_TOKEN:?required}"
+      NACOS_AUTH_IDENTITY_KEY: "${NACOS_AUTH_IDENTITY_KEY:?required}"
+      NACOS_AUTH_IDENTITY_VALUE: "${NACOS_AUTH_IDENTITY_VALUE:?required}"
+      JVM_XMS: 384m
+      JVM_XMX: 384m
+      JVM_XMN: 128m
+    volumes: [nacos-logs:/home/nacos/logs]
+    networks: [ygh-backend]
+    mem_limit: 768m
+    logging: *service-logging
+    healthcheck: {<<: *health, test: [CMD-SHELL, "curl -fsS http://127.0.0.1:8848/nacos/v3/admin/core/state/readiness >/dev/null"]}
+
+  rocketmq-namesrv:
+    image: apache/rocketmq:5.3.1
+    restart: unless-stopped
+    command: [sh, mqnamesrv]
+    networks: [ygh-backend]
+    mem_limit: 384m
+    logging: *service-logging
+    healthcheck: {<<: *health, test: [CMD-SHELL, "grep -q 'The Name Server boot success' /home/rocketmq/logs/rocketmqlogs/namesrv.log"]}
+
+  rocketmq-broker:
+    image: apache/rocketmq:5.3.1
+    restart: unless-stopped
+    depends_on:
+      rocketmq-namesrv: {condition: service_healthy}
+    command: [sh, mqbroker, -n, rocketmq-namesrv:9876, -c, /home/rocketmq/rocketmq-5.3.1/conf/broker.conf]
+    environment: {NAMESRV_ADDR: rocketmq-namesrv:9876}
+    volumes:
+      - ../constrained-dev/rocketmq/broker.conf:/home/rocketmq/rocketmq-5.3.1/conf/broker.conf:ro
+      - rocketmq-store:/home/rocketmq/store
+    networks: [ygh-backend]
+    mem_limit: 1g
+    logging: *service-logging
+    healthcheck: {<<: *health, test: [CMD-SHELL, "grep -q 'boot success' /home/rocketmq/logs/rocketmqlogs/broker.log"]}
+
+  seata:
+    image: apache/seata-server:2.5.0
+    restart: unless-stopped
+    environment:
+      STORE_MODE: file
+      SEATA_IP: seata
+      SEATA_PORT: 8091
+      JAVA_OPTS: -Xms256m -Xmx256m
+    networks: [ygh-backend]
+    mem_limit: 512m
+    logging: *service-logging
+
+  prometheus:
+    image: prom/prometheus:v3.5.0
+    restart: unless-stopped
+    command: [--config.file=/etc/prometheus/prometheus.yml, --storage.tsdb.retention.time=15d, --storage.tsdb.retention.size=8GB]
+    volumes:
+      - ../observability/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ../observability/rules:/etc/prometheus/rules:ro
+      - prometheus-data:/prometheus
+    networks: [ygh-backend]
+    mem_limit: 768m
+    logging: *service-logging
+
+  alertmanager:
+    image: prom/alertmanager:v0.28.1
+    restart: unless-stopped
+    command: [--config.file=/etc/alertmanager/alertmanager.yml, --storage.path=/alertmanager]
+    volumes:
+      - ../observability/alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro
+      - alertmanager-data:/alertmanager
+    networks: [ygh-backend]
+    mem_limit: 256m
+    logging: *service-logging
+
+  grafana:
+    image: grafana/grafana:12.0.2
+    restart: unless-stopped
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: "${GRAFANA_ADMIN_PASSWORD:?required}"
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    volumes: [grafana-data:/var/lib/grafana]
+    networks: [ygh-backend]
+    mem_limit: 512m
+    logging: *service-logging
+
+  loki:
+    image: grafana/loki:3.5.1
+    restart: unless-stopped
+    command: [-config.file=/etc/loki/local-config.yaml]
+    volumes:
+      - ../observability/loki.yml:/etc/loki/local-config.yaml:ro
+      - loki-data:/loki
+    networks: [ygh-backend]
+    mem_limit: 512m
+    logging: *service-logging
+
+  promtail:
+    image: grafana/promtail:3.5.1
+    restart: unless-stopped
+    command: [-config.file=/etc/promtail/config.yml]
+    volumes:
+      - ../observability/promtail.yml:/etc/promtail/config.yml:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    depends_on: [loki]
+    networks: [ygh-backend]
+    mem_limit: 256m
+    logging: *service-logging
+
+  node-exporter:
+    image: prom/node-exporter:v1.9.1
+    restart: unless-stopped
+    command: [--path.rootfs=/host]
+    volumes: ["/:/host:ro,rslave"]
+    networks: [ygh-backend]
+    mem_limit: 128m
+    logging: *service-logging
+
+networks:
+  ygh-backend: {name: ygh-enterprise-backend}
+volumes:
+  mysql-data: {}
+  redis-data: {}
+  pgvector-data: {}
+  elasticsearch-data: {}
+  knowledge-files: {}
+  nacos-logs: {}
+  rocketmq-store: {}
+  prometheus-data: {}
+  alertmanager-data: {}
+  grafana-data: {}
+  loki-data: {}

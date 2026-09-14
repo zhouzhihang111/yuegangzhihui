@@ -1,0 +1,1 @@
+package com.yuegang.zhihui.wallet.api;import jakarta.validation.constraints.*;import java.math.BigDecimal;public record WalletCommand(@NotBlank String requestId,@NotBlank String referenceId,@NotNull @DecimalMin("0.01")@Digits(integer=16,fraction=2)BigDecimal amount,@NotBlank @Pattern(regexp="[A-Z]{3}")String currency){}

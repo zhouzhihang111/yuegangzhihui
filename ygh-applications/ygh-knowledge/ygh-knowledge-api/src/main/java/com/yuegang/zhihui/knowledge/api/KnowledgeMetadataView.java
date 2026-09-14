@@ -1,0 +1,1 @@
+package com.yuegang.zhihui.knowledge.api;import java.time.*;import java.util.*;public record KnowledgeMetadataView(String documentId,String issuingAuthority,LocalDate effectiveFrom,OffsetDateTime expiresAt,String region,String classification,String sourceName,List<String>tags,long metadataVersion){}

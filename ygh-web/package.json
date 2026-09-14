@@ -1,0 +1,20 @@
+{
+  "name": "@ygh/web-workspace",
+  "private": true,
+  "packageManager": "pnpm@10.13.1",
+  "scripts": {
+    "dev:mall": "pnpm --filter @ygh/web-mall dev",
+    "dev:admin": "pnpm --filter @ygh/web-admin dev",
+    "build": "pnpm -r build",
+    "type-check": "pnpm -r type-check",
+    "lint": "pnpm -r lint"
+  },
+  "devDependencies": {
+    "@eslint/js": "9.31.0",
+    "eslint": "9.31.0",
+    "eslint-plugin-vue": "10.3.0",
+    "globals": "14.0.0",
+    "typescript": "5.8.3",
+    "typescript-eslint": "8.38.0"
+  }
+}

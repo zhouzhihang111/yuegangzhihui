@@ -1,0 +1,38 @@
+{
+  "notice": "All values are synthetic. Simulated balances are not real money and no shipment occurs.",
+  "auth": {
+    "login": {"principal": "demo.employee@example.invalid", "password": "runtime-only"},
+    "session": {"accessToken": "mock-access-token", "refreshToken": "mock-refresh-token", "expiresIn": 900}
+  },
+  "product": {
+    "skuId": "100000000000000001",
+    "skuCode": "FRESH-DEMO-001",
+    "name": "供港生鲜示例商品",
+    "price": 68.80,
+    "currency": "CNY",
+    "status": "PUBLISHED",
+    "traceabilityCode": "TRACE-DEMO-001"
+  },
+  "wallet": {"userId": "200000000000000001", "availableBalance": 1000.00, "currency": "CNY", "simulated": true},
+  "order": {
+    "orderId": "300000000000000001",
+    "orderNo": "YG-DEMO-001",
+    "status": "PENDING_PAYMENT",
+    "totalAmount": 68.80,
+    "currency": "CNY",
+    "address": {"recipientName": "示例员工", "recipientPhone": "138****0000", "provinceName": "广东省", "cityName": "示例市", "districtName": "示例区", "addressDetail": "已脱敏示例地址"}
+  },
+  "knowledge": {"documentId": "400000000000000001", "title": "跨境政策示例文档", "category": "POLICY", "status": "PUBLISHED", "classification": "INTERNAL"},
+  "ai": {
+    "conversationId": "500000000000000001",
+    "answer": "这是基于已审核示例知识生成的回答。",
+    "citations": [{"sourceType": "KNOWLEDGE", "sourceId": "400000000000000001:1", "title": "跨境政策示例文档"}],
+    "refused": false
+  },
+  "training": {"assignmentId": "600000000000000001", "courseId": "610000000000000001", "status": "IN_PROGRESS", "progressPercent": 50.00, "bestScore": 80},
+  "errors": {
+    "unauthenticated": {"code": "UNAUTHENTICATED", "message": "请先登录", "data": null, "traceId": "mock-trace-401", "timestamp": "2026-07-12T00:00:00Z"},
+    "forbidden": {"code": "PERMISSION_DENIED", "message": "无权执行该操作", "data": null, "traceId": "mock-trace-403", "timestamp": "2026-07-12T00:00:00Z"},
+    "conflict": {"code": "BUSINESS_CONFLICT", "message": "资源状态已变化", "data": null, "traceId": "mock-trace-409", "timestamp": "2026-07-12T00:00:00Z"}
+  }
+}

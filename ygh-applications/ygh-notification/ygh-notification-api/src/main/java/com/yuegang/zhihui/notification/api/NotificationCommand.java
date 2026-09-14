@@ -1,0 +1,1 @@
+package com.yuegang.zhihui.notification.api;import jakarta.validation.constraints.*;import java.util.Map;public record NotificationCommand(@NotBlank String eventId,@NotBlank String userId,@NotBlank String templateCode,@NotNull @Size(max=50)Map<String,String>variables){}

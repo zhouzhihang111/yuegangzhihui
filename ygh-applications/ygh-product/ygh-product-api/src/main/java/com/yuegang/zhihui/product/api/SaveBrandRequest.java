@@ -1,0 +1,1 @@
+package com.yuegang.zhihui.product.api;import jakarta.validation.constraints.*;public record SaveBrandRequest(@NotBlank @Size(max=64)String code,@NotBlank @Size(max=100)String name,@Size(max=512)String logoUrl){}

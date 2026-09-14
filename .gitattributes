@@ -1,0 +1,26 @@
+* text=auto
+
+.gitattributes text eol=lf
+.gitignore text eol=lf
+*.example text eol=lf
+*.conf text eol=lf
+*.java text eol=lf
+*.xml text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.json text eol=lf
+*.md text eol=lf whitespace=-trailing-space,-blank-at-eof
+*.properties text eol=lf
+*.imports text eol=lf
+*.config text eol=lf
+
+*.cnf text eol=lf
+*.sql text eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.pdf binary
+*.doc binary
+*.docx binary

@@ -1,0 +1,1 @@
+package com.yuegang.zhihui.order.api;import jakarta.validation.constraints.*;public record CartItemRequest(@NotBlank String skuId,@Positive @Max(999)long quantity,boolean selected,@PositiveOrZero long version){}

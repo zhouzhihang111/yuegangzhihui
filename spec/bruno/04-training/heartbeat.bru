@@ -1,0 +1,4 @@
+meta { name: Training Heartbeat type: http seq: 2 }
+post { url: {{baseUrl}}/api/v1/training/progress/heartbeat body: json auth: bearer }
+auth:bearer { token: {{accessToken}} }
+body:json { {"assignmentId":"{{assignmentId}}","chapterId":"{{chapterId}}","activeSeconds":60,"nonce":"bruno-heartbeat-001"} }

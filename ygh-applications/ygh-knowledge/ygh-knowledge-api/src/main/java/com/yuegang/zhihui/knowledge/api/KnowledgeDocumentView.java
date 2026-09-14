@@ -1,0 +1,1 @@
+package com.yuegang.zhihui.knowledge.api;import java.time.OffsetDateTime;public record KnowledgeDocumentView(String id,String title,String category,String fileName,String mediaType,long sizeBytes,String sha256,KnowledgeStatus status,long version,OffsetDateTime updatedAt){}

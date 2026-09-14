@@ -1,0 +1,1 @@
+package com.yuegang.zhihui.system.api;import jakarta.validation.constraints.*;public record UpdateSystemSettingRequest(@NotBlank @Size(max=2000)String value,@NotBlank @Pattern(regexp="STRING|INTEGER|BOOLEAN|JSON")String valueType,boolean secret,@PositiveOrZero long version){}

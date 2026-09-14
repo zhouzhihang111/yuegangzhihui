@@ -1,0 +1,1 @@
+package com.yuegang.zhihui.common.mq;public interface DomainEventPublisher extends AutoCloseable{void publish(String eventId,String aggregateId,String eventType,String payload);@Override default void close(){}}

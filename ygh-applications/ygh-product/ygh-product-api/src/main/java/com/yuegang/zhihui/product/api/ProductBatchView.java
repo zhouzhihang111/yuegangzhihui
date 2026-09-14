@@ -1,0 +1,1 @@
+package com.yuegang.zhihui.product.api;import java.time.*;public record ProductBatchView(String id,String skuId,String batchNo,String origin,String proofUrl,LocalDate producedOn,LocalDate expiresOn,String traceDescription){}

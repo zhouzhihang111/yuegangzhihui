@@ -1,0 +1,1 @@
+package com.yuegang.zhihui.order.api;import java.math.BigDecimal;import java.time.OffsetDateTime;public record OrderView(String orderId,String orderNo,String userId,OrderStatus status,BigDecimal totalAmount,String currency,long version,OffsetDateTime createdAt){}

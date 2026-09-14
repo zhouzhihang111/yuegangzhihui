@@ -1,0 +1,1 @@
+package com.yuegang.zhihui.search.api;import java.time.OffsetDateTime;public record IndexVersionView(String alias,String activeVersion,String previousVersion,long vectorChunks,OffsetDateTime switchedAt){}

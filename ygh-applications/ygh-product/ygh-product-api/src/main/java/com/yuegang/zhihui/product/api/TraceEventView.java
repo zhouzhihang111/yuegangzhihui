@@ -1,0 +1,1 @@
+package com.yuegang.zhihui.product.api;import java.time.OffsetDateTime;import java.util.Map;public record TraceEventView(String id,String skuId,String type,String location,OffsetDateTime occurredAt,Map<String,Object>details){}

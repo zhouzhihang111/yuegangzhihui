@@ -1,0 +1,1 @@
+CREATE TABLE notification_delivery_audit(id BIGINT NOT NULL,message_id BIGINT NOT NULL,action VARCHAR(24) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,operator_user_id BIGINT NULL,detail VARCHAR(1000) NULL,created_at DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),PRIMARY KEY(id),INDEX idx_notification_audit_message_time(message_id,created_at));

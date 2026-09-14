@@ -1,0 +1,1 @@
+package com.yuegang.zhihui.ai.api;import jakarta.validation.constraints.*;public record ChatRequest(String conversationId,@NotBlank @Size(max=4000)String message,String category,boolean includeOwnOrders){}

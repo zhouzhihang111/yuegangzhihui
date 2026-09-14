@@ -1,0 +1,55 @@
+server:
+  port: ${YGH_USER_PORT:8082}
+  shutdown: graceful
+spring:
+  application:
+    name: ygh-user-service
+  lifecycle:
+    timeout-per-shutdown-phase: 20s
+  datasource:
+    url: ${YGH_USER_DB_URL}
+    username: ${YGH_USER_DB_APP_USERNAME:ygh_user_app}
+    password: ${YGH_USER_DB_APP_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: ${YGH_USER_DB_POOL_MAX_SIZE:5}
+      minimum-idle: ${YGH_USER_DB_POOL_MIN_IDLE:1}
+  flyway:
+    url: ${YGH_USER_DB_URL}
+    user: ${YGH_USER_DB_MIGRATION_USERNAME:ygh_user_migration}
+    password: ${YGH_USER_DB_MIGRATION_PASSWORD}
+    locations: classpath:db/migration
+    clean-disabled: true
+    baseline-on-migrate: false
+    out-of-order: false
+    validate-on-migrate: true
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${YGH_NACOS_SERVER_ADDR}
+        username: ${YGH_NACOS_USERNAME}
+        password: ${YGH_NACOS_PASSWORD}
+        namespace: ${YGH_NACOS_NAMESPACE:ygh-dev}
+        group: ${YGH_NACOS_DISCOVERY_GROUP:YGH_GROUP}
+        ip: ${YGH_USER_ADVERTISE_IP:}
+management:
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      show-details: never
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+ygh:
+  user:
+    pii-key-base64: ${YGH_USER_PII_KEY_BASE64}
+    pii-key-version: ${YGH_USER_PII_KEY_VERSION:1}
+    id-worker: ${YGH_USER_ID_WORKER:2}
+  internal-request:
+    hmac-base64: ${YGH_INTERNAL_REQUEST_HMAC_BASE64}
+management.endpoints.web.exposure.include: health,info,metrics,prometheus
+management.endpoint.health.probes.enabled: true
+management.endpoint.health.show-details: when-authorized
+management.metrics.tags.application: ${spring.application.name}

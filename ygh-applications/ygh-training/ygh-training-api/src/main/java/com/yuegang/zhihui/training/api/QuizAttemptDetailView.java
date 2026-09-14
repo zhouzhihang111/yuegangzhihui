@@ -1,0 +1,1 @@
+package com.yuegang.zhihui.training.api;import java.time.OffsetDateTime;import java.util.Map;public record QuizAttemptDetailView(String attemptId,String assignmentId,String gateId,int score,boolean passed,Map<String,String>answers,OffsetDateTime submittedAt){}

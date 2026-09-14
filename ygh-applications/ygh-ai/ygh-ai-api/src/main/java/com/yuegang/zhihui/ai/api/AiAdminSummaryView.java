@@ -1,0 +1,1 @@
+package com.yuegang.zhihui.ai.api;public record AiAdminSummaryView(long conversations,long messages,long refusals,long feedback,long helpfulFeedback,long enabledEvaluationCases,boolean activePrompt){}

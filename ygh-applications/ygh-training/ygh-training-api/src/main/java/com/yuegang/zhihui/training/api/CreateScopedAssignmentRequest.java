@@ -1,0 +1,1 @@
+package com.yuegang.zhihui.training.api;import jakarta.validation.constraints.*;import java.time.*;public record CreateScopedAssignmentRequest(@NotBlank @Pattern(regexp="DEPARTMENT|POSITION|EMPLOYEE")String targetType,@NotBlank String targetId,String pathId,@NotBlank String courseId,OffsetDateTime dueAt){}

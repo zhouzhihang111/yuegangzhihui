@@ -1,0 +1,1 @@
+package com.yuegang.zhihui.ai.api;import java.time.OffsetDateTime;public record PromptConfigView(String id,String code,String systemPrompt,String modelName,double temperature,String knowledgeScope,String sensitiveWords,boolean enabled,long version,OffsetDateTime updatedAt){}
